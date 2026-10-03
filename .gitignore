@@ -1,0 +1,25 @@
+# ── Ignore everything by default ──────────────────────────────────────
+/*
+
+# ── ...then allow back only our own work ──────────────────────────────
+!.gitignore
+!LICENSE
+# notes/ stays local on purpose -- working notes, not published
+!patches/
+
+# mods: only the ones we wrote or changed
+!mods/
+mods/*
+!mods/tournament/
+!mods/title/
+mods/title/*
+!mods/title/src/
+
+# Uncomment once you've replaced upstream's README.md with your own.
+# GitHub only renders the one at the repo root.
+#!README.md
+
+# ── Never, under any circumstances ────────────────────────────────────
+*.iso
+.DS_Store
+**/.DS_Store
