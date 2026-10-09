@@ -81,6 +81,33 @@ int TE_ClockShouldStop() {
 }
 CODEPATCH_HOOKCONDITIONALCREATE(0x80011460, "", TE_ClockShouldStop, "", 0, 0x80011494)
 
+int TE_IsPatchKind(ItemKind kind) {
+    return (kind >= ITKIND_ACCEL && kind <= ITKIND_ALLUP) ||
+        (kind >= ITKIND_ACCELFAKE && kind <= ITKIND_WEIGHTFAKE);
+}
+
+int TE_ItemCreateGate(ItemDesc *desc) {
+    if (phase != PHASE_DEATHMATCH) {
+        return 0;
+    }
+
+    if (TE_IsPatchKind(desc->kind)) {
+        return 1;
+    }
+
+    if (desc->kind == ITKIND_BOXBLUE) {
+        ItemKind new_kind = HSD_Randi(2) ? ITKIND_BOXRED : ITKIND_BOXGREEN;
+        desc->kind = new_kind;
+        if (desc->x40 == ITKIND_BOXBLUE) {
+            desc->x40 = new_kind;
+        }
+    }
+
+    return 0;
+}
+
+CODEPATCH_HOOKCONDITIONALCREATE(0x8024efa8, "mr 3, 29\n\t", TE_ItemCreateGate, "", 0, 0x8024efa0)
+
 #define EventBanner_Create ((void (*)(int, int))0x80113fb4)
 #define PVP_BANNER_KIND EVKIND_SAMEITEM
 #define PVP_BANNER_FRAMES (5 * 60)
@@ -222,6 +249,7 @@ void OnFrame() {
 
 void OnBoot() {
     CODEPATCH_HOOKAPPLY(0x80011460);
+    CODEPATCH_HOOKAPPLY(0x8024efa8);
     CODEPATCH_REPLACECALL(HP_SUBTRACT_CALLSITE, TE_IsDamageEnabled);
     CODEPATCH_REPLACECALL(DEATH_CALLSITE, TE_OnDeath);
     CODEPATCH_REPLACECALL(0x80127674, TE_EventText_Show);
