@@ -7,9 +7,8 @@
 !mods/
 mods/*
 !mods/tournament/
-!mods/title/
-mods/title/*
-!mods/title/src/
+mods/tournament/*
+!mods/tournament/src/
 
 *.iso
 .DS_Store
