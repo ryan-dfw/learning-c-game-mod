@@ -1,12 +1,10 @@
 #include "game.h"
 #include "phase.h"
-#include "banner.h"
 #include "zone.h"
 
 #define ZONE_START_RADIUS 1300.0f
 #define ZONE_CLOSE_TICKS (60 * 60)
 
-static int announced = 0;
 
 static float TE_ZoneProgress() {
     float p = TE_GetDeathmatchTicks() * (1.0f / ZONE_CLOSE_TICKS);
@@ -53,28 +51,7 @@ static void TE_ZoneKillOutside() {
     }
 }
 
-static void TE_ZoneAnnounce() {
-    int ticks = TE_GetDeathmatchTicks();
-
-    if (announced == 0) {
-        if (TE_TryShowBanner("Deathmatch! The wall is closing in!", 4 * 60)) { announced = 1; }
-    } else if (announced == 1 && ticks >= ZONE_CLOSE_TICKS / 2) {
-        if (TE_TryShowBanner("The wall is halfway! Stay near the middle!", 4 * 60)) { announced = 2; }
-    } else if (announced == 2 && ticks >= ZONE_CLOSE_TICKS - 15 * 60) {
-        if (TE_TryShowBanner("15 seconds until the wall closes!", 4 * 60)) { announced = 3; }
-    }
-}
-
-void TE_Zone_MatchLoaded() {
-    announced = 0;
-}
-
-void TE_Zone_MatchExit() {
-    announced = 0;
-}
-
 void TE_Zone_Frame() {
     if (TE_GetPhase() != PHASE_DEATHMATCH) { return; }
-    TE_ZoneAnnounce();
     TE_ZoneKillOutside();
 }

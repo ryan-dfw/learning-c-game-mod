@@ -18,7 +18,7 @@
 #define WALL_BOTTOM_Y (-50.0f)
 #define WALL_TOP_Y 1500.0f
 
-// Game functions, called by address (like EventBanner_Create in banner.c).
+// Game functions, called by address.
 #define CObj_GetCurrentCam ((COBJ *(*)())0x80402f5c)
 #define CObj_GetViewMtx ((void (*)(COBJ *, Mtx *))0x80402704)
 #define GX_SetBlendMode ((void (*)(GXBlendMode, GXBlendFactor, GXBlendFactor, GXLogicOp))0x803cf820)

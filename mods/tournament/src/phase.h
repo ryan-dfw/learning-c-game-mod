@@ -18,10 +18,7 @@ typedef enum {
 
 TE_Phase TE_GetPhase();
 int TE_IsAlive(int ply);
-int TE_CountAlive();
 int TE_GetDeathmatchTicks();
-int TE_GetLastDeath();
-void TE_ClearLastDeath();
 void TE_KillMachine(MachineData *md);
 void TE_Phase_Install();
 void TE_Phase_MatchLoaded();

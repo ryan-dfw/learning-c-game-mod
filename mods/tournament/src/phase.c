@@ -7,19 +7,10 @@
 
 static TE_Phase phase = PHASE_NONE;
 static u8 died[MAX_PLAYERS];
-static int death_ply = -1;
 static int deathmatch_ticks = 0;
 
 TE_Phase TE_GetPhase() {
     return phase;
-}
-
-int TE_GetLastDeath() {
-    return death_ply;
-}
-
-void TE_ClearLastDeath() {
-    death_ply = -1;
 }
 
 int TE_GetDeathmatchTicks() {
@@ -30,7 +21,7 @@ int TE_IsAlive(int ply) {
     return ply >= 0 && ply < MAX_PLAYERS && Ply_GetPKind(ply) != PKIND_NONE && !died[ply];
 }
 
-int TE_CountAlive() {
+static int TE_CountAlive() {
     int count = 0;
     for (int i = 0; i <MAX_PLAYERS; i++) {
         if (TE_IsAlive(i)) {
@@ -59,7 +50,6 @@ static int TE_AnyoneDied() {
 static void TE_OnDeath(int ply, DmgLog *dmg_log, int is_bike, MachineKind machine_kind) {
     if (ply >= 0 && ply < MAX_PLAYERS) {
         died[ply] = 1;
-        death_ply = ply;
 
         if (phase == PHASE_DEATHMATCH && TE_CountAlive() <= 1) {
             phase = PHASE_FINISH;
@@ -111,11 +101,9 @@ void TE_Phase_MatchLoaded() {
     for (int i = 0; i < MAX_PLAYERS; i++) {
         died[i] = 0;
     }
-    death_ply = -1;
     deathmatch_ticks = 0;
 }
 
 void TE_Phase_MatchExit() {
     phase = PHASE_NONE;
-    death_ply = -1;
 }
