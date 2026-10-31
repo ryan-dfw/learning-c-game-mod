@@ -1,3 +1,12 @@
+// Claude wrote 100% of this; it works but i can not understand it; i am not a graphics dev
+//
+// Draws the deathmatch wall as a see-through red curtain around the edge of the circle.
+//
+// The game draws everything through "GX links": each object can register a draw callback on a
+// numbered link, and every player camera calls the callbacks of its links, three times per frame
+// (once per pass). We register one callback on a link the cameras use, and draw in the pass for
+// see-through things.
+
 #include "game.h"
 #include "phase.h"
 #include "zone.h"

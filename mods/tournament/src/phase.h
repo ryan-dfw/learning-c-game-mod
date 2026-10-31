@@ -3,23 +3,27 @@
 
 #include "game.h"
 
-// 1/60s ticks remaining on clock
-#define PVP_START_TICKS (2 * 60 * 60)
-#define DEATHMATCH_START_TICKS (2 * 60)
 #define MAX_PLAYERS 4
 
 typedef enum {
-    PHASE_NONE,
-    PHASE_NO_DAMAGE,
-    PHASE_NORMAL,
-    PHASE_DEATHMATCH,
-    PHASE_FINISH
+    PHASE_NONE,       // not a City Trial match: the mod does nothing
+    PHASE_NO_DAMAGE,  // this mod's core feature: machines cannot be damaged
+    PHASE_NORMAL,     // resumes normal City Trial rules
+    PHASE_DEATHMATCH, // overtime; clock frozen, no stat items, shrinking instakill wall
+    PHASE_FINISH      // over: clock runs out normally
 } TE_Phase;
 
 TE_Phase TE_GetPhase();
-int TE_IsAlive(int ply);
+
+// Time spent in deathmatch phase, in ticks
 int TE_GetDeathmatchTicks();
+
+// Tracks if a player or CP has not taken a death in the match
+int TE_IsAlive(int ply);
+
+// instakill handler for the overtime wall
 void TE_KillMachine(MachineData *md);
+
 void TE_Phase_Install();
 void TE_Phase_MatchLoaded();
 void TE_Phase_MatchExit();
